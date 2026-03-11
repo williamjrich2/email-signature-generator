@@ -1,0 +1,141 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Fira+Code:wght@400;500&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root,
+:root[data-theme='dark'] {
+  color-scheme: dark;
+  --app-bg: #0a0a0b;
+  --app-surface: #141416;
+  --app-elevated: #1a1a1d;
+  --app-border: #2a2a2e;
+  --app-text: #f5f5f7;
+  --app-muted: #8e8e93;
+  --app-accent: #6366f1;
+  --app-success: #22c55e;
+  --app-warning: #f59e0b;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+:root[data-theme='light'] {
+  color-scheme: light;
+  --app-bg: #f4f4f6;
+  --app-surface: rgba(255, 255, 255, 0.8);
+  --app-elevated: #ffffff;
+  --app-border: rgba(15, 23, 42, 0.08);
+  --app-text: #111318;
+  --app-muted: #5f6472;
+  --app-accent: #4f46e5;
+  --app-success: #16a34a;
+  --app-warning: #d97706;
+}
+
+html {
+  min-width: 320px;
+  background: var(--app-bg);
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--app-bg);
+  color: var(--app-text);
+  font-family: 'DM Sans', sans-serif;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+button,
+input,
+select,
+textarea {
+  font-family: inherit;
+}
+
+::selection {
+  background: rgba(99, 102, 241, 0.35);
+  color: #fff;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+*::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.12);
+}
+
+@layer components {
+  .glass-panel {
+    @apply rounded-[28px] border border-app-border shadow-[0_24px_80px_rgba(0,0,0,0.28)] backdrop-blur-xl;
+    background-color: color-mix(in srgb, var(--app-surface) 82%, transparent);
+  }
+
+  .eyebrow {
+    @apply inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[11px] font-medium uppercase tracking-[0.22em] text-app-muted;
+  }
+
+  .field-shell {
+    @apply rounded-2xl border border-app-border px-4 py-3 transition duration-200;
+    background-color: color-mix(in srgb, var(--app-elevated) 82%, transparent);
+  }
+
+  .field-shell:focus-within {
+    border-color: color-mix(in srgb, var(--app-accent) 80%, transparent);
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--app-accent) 25%, transparent);
+  }
+
+  .field-label {
+    @apply mb-2 block text-xs font-semibold uppercase tracking-[0.18em] text-app-muted;
+  }
+
+  .input-base {
+    @apply w-full bg-transparent text-sm text-app-text outline-none;
+  }
+
+  .input-base::placeholder {
+    color: color-mix(in srgb, var(--app-muted) 70%, transparent);
+  }
+
+  .tab-button {
+    @apply inline-flex items-center justify-center rounded-2xl border border-transparent px-4 py-2 text-sm font-medium text-app-muted transition duration-200 hover:border-white/10 hover:text-app-text;
+  }
+
+  .tab-button-active {
+    @apply text-white shadow-[0_0_0_1px_rgba(99,102,241,0.24)];
+    border-color: color-mix(in srgb, var(--app-accent) 50%, transparent);
+    background-color: color-mix(in srgb, var(--app-accent) 15%, transparent);
+  }
+
+  .control-button {
+    @apply inline-flex items-center justify-center gap-2 rounded-2xl border border-app-border bg-white/5 px-4 py-2.5 text-sm font-medium text-app-text transition duration-200 hover:border-white/15 hover:bg-white/10;
+  }
+
+  .control-button-primary {
+    @apply border-transparent bg-app-accent text-white shadow-[0_18px_45px_rgba(79,70,229,0.35)] hover:bg-indigo-500;
+  }
+
+  .subtle-grid {
+    background-image:
+      linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    background-size: 28px 28px;
+  }
+}
