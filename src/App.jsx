@@ -1,11 +1,10 @@
 import { useDeferredValue, useEffect, useState } from 'react'
 import BuilderPanel from './components/Builder/BuilderPanel'
 import ExportBar from './components/Export/ExportBar'
+import { MOHAWK_SIGNATURE_WIDTH } from './config/mohawkBrand'
 import AppShell from './components/Layout/AppShell'
 import TopBar from './components/Layout/TopBar'
 import PreviewPanel from './components/Preview/PreviewPanel'
-import ScannerModal from './components/Scanner/ScannerModal'
-import SettingsPanel from './components/Settings/SettingsPanel'
 import { useDebounce } from './hooks/useDebounce'
 import { useFormData } from './hooks/useFormData'
 import {
@@ -15,32 +14,7 @@ import {
 } from './utils/copyToClipboard'
 import generateSignatureHtml from './utils/generateSignatureHtml'
 
-const SETTINGS_KEY = 'signature-generator-settings'
 const THEME_KEY = 'signature-generator-theme'
-
-const defaultSettings = {
-  anthropicApiKey: '',
-  defaultSignatureWidth: '350',
-  defaultCountry: 'US',
-}
-
-function loadStoredState(key, fallback) {
-  if (typeof window === 'undefined') {
-    return fallback
-  }
-
-  const rawValue = window.localStorage.getItem(key)
-
-  if (!rawValue) {
-    return fallback
-  }
-
-  try {
-    return { ...fallback, ...JSON.parse(rawValue) }
-  } catch {
-    return fallback
-  }
-}
 
 function App() {
   const [theme, setTheme] = useState(() => {
@@ -50,37 +24,22 @@ function App() {
 
     return window.localStorage.getItem(THEME_KEY) || 'dark'
   })
-  const [settings, setSettings] = useState(() =>
-    loadStoredState(SETTINGS_KEY, defaultSettings),
-  )
   const [previewBackdrop, setPreviewBackdrop] = useState('light')
-  const [settingsOpen, setSettingsOpen] = useState(false)
-  const [scannerOpen, setScannerOpen] = useState(false)
   const [toast, setToast] = useState(null)
   const [copyState, setCopyState] = useState('')
 
-  const {
-    formData,
-    resetFormData,
-    setSectionField,
-    setSocialField,
-    setTemplate,
-    applyScannerData,
-  } = useFormData(settings.defaultCountry)
+  const { formData, resetFormData, setSectionField } = useFormData()
 
   const debouncedFormData = useDebounce(formData, 120)
-  const signatureHtml = generateSignatureHtml(debouncedFormData, settings)
+  const signatureHtml = generateSignatureHtml(debouncedFormData, {
+    defaultSignatureWidth: String(MOHAWK_SIGNATURE_WIDTH),
+  })
   const deferredSignatureHtml = useDeferredValue(signatureHtml)
-  const hasEmbeddedAssets = /(data:image|blob:)/i.test(signatureHtml)
 
   useEffect(() => {
     document.documentElement.dataset.theme = theme
     window.localStorage.setItem(THEME_KEY, theme)
   }, [theme])
-
-  useEffect(() => {
-    window.localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings))
-  }, [settings])
 
   useEffect(() => {
     if (!toast) {
@@ -99,13 +58,6 @@ function App() {
     const timeoutId = window.setTimeout(() => setCopyState(''), 1800)
     return () => window.clearTimeout(timeoutId)
   }, [copyState])
-
-  function setSettingsField(field, value) {
-    setSettings((current) => ({
-      ...current,
-      [field]: value,
-    }))
-  }
 
   function showToast(message, tone = 'success') {
     setToast({
@@ -146,48 +98,30 @@ function App() {
     showToast('HTML file downloaded')
   }
 
-  function handleScannerApply(scannerData) {
-    applyScannerData(scannerData)
-    setScannerOpen(false)
-    showToast('Form populated from screenshot')
-  }
-
   return (
     <div className="relative min-h-screen overflow-hidden bg-app-bg text-app-text">
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
-        <div className="absolute left-[-10%] top-[-12%] h-80 w-80 rounded-full bg-indigo-500/20 blur-3xl" />
-        <div className="absolute bottom-[-18%] right-[-8%] h-96 w-96 rounded-full bg-cyan-500/10 blur-3xl" />
+        <div className="absolute left-[-10%] top-[-12%] h-80 w-80 rounded-full bg-[#8ea35d]/15 blur-3xl" />
+        <div className="absolute bottom-[-18%] right-[-8%] h-96 w-96 rounded-full bg-[#2c3440]/30 blur-3xl" />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.08),transparent_30%),linear-gradient(180deg,rgba(255,255,255,0.03),transparent_24%),linear-gradient(135deg,rgba(255,255,255,0.02)_0%,transparent_60%)]" />
       </div>
 
       <AppShell
-        topBar={
-          <TopBar
-            onOpenScanner={() => setScannerOpen(true)}
-            onOpenSettings={() => setSettingsOpen(true)}
-            theme={theme}
-            onThemeChange={setTheme}
-          />
-        }
+        topBar={<TopBar theme={theme} onThemeChange={setTheme} />}
         builder={
           <BuilderPanel
             formData={formData}
-            settings={settings}
-            onOpenScanner={() => setScannerOpen(true)}
             onReset={resetFormData}
             setSectionField={setSectionField}
-            setSocialField={setSocialField}
-            setTemplate={setTemplate}
           />
         }
         preview={
           <div className="space-y-6">
             <PreviewPanel
               html={deferredSignatureHtml}
-              width={settings.defaultSignatureWidth}
+              width={String(MOHAWK_SIGNATURE_WIDTH)}
               previewBackdrop={previewBackdrop}
               onBackdropChange={setPreviewBackdrop}
-              hasEmbeddedAssets={hasEmbeddedAssets}
             />
             <ExportBar
               copyState={copyState}
@@ -197,22 +131,6 @@ function App() {
             />
           </div>
         }
-      />
-
-      <SettingsPanel
-        isOpen={settingsOpen}
-        settings={settings}
-        onClose={() => setSettingsOpen(false)}
-        onChangeField={setSettingsField}
-      />
-
-      <ScannerModal
-        apiKey={settings.anthropicApiKey}
-        defaultCountry={settings.defaultCountry}
-        isOpen={scannerOpen}
-        onApply={handleScannerApply}
-        onClose={() => setScannerOpen(false)}
-        onSaveApiKey={(value) => setSettingsField('anthropicApiKey', value)}
       />
 
       {toast ? (

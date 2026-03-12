@@ -41,7 +41,7 @@ export default function ExportBar({
         </div>
       </div>
 
-      <div className="mt-6 grid gap-3 md:grid-cols-3">
+      <div className="mt-6 grid gap-3 sm:grid-cols-3">
         <ActionButton
           active={copyState === 'html'}
           icon={Clipboard}

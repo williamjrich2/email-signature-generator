@@ -5,7 +5,6 @@ export default function PreviewPanel({
   width,
   previewBackdrop,
   onBackdropChange,
-  hasEmbeddedAssets,
 }) {
   return (
     <div className="glass-panel overflow-hidden">
@@ -14,11 +13,11 @@ export default function PreviewPanel({
           <div>
             <div className="eyebrow">Live Preview</div>
             <h2 className="mt-3 font-heading text-2xl font-semibold text-app-text">
-              Rendered exactly from the exported HTML.
+              Rendered from the same HTML your team will paste into Outlook.
             </h2>
             <p className="mt-2 max-w-xl text-sm text-app-muted">
-              Toggle the email-client background to sanity-check contrast before
-              you copy the signature into Outlook or Gmail.
+              The preview stays mobile-safe and desktop-safe, with a single-column
+              signature layout designed for reliable email rendering.
             </p>
           </div>
 
@@ -44,16 +43,12 @@ export default function PreviewPanel({
           <div className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs uppercase tracking-[0.18em] text-app-muted">
             Width {width}px
           </div>
-          {hasEmbeddedAssets ? (
-            <div className="rounded-full border border-amber-400/30 bg-amber-500/10 px-3 py-1 text-xs text-amber-200">
-              Local uploads are embedded for preview. Hosted URLs are safer for
-              email clients.
-            </div>
-          ) : (
-            <div className="rounded-full border border-emerald-400/30 bg-emerald-500/10 px-3 py-1 text-xs text-emerald-200">
-              Asset references are ready as absolute URLs.
-            </div>
-          )}
+          <div className="rounded-full border border-emerald-400/30 bg-emerald-500/10 px-3 py-1 text-xs text-emerald-200">
+            Mohawk preset assets are loaded as absolute URLs.
+          </div>
+          <div className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-app-muted">
+            Mobile-first app layout enabled
+          </div>
         </div>
       </div>
 

@@ -1,30 +1,18 @@
-import { RotateCcw, ScanSearch } from 'lucide-react'
+import { Building2, RotateCcw } from 'lucide-react'
 import { useState } from 'react'
 import BannerTab from './BannerTab'
 import BrandingTab from './BrandingTab'
 import ContactInfoTab from './ContactInfoTab'
 import PersonalInfoTab from './PersonalInfoTab'
-import SocialMediaTab from './SocialMediaTab'
-import TemplateSelector from './TemplateSelector'
 
 const tabs = [
-  { id: 'personal', label: 'Personal' },
+  { id: 'personal', label: 'Employee' },
   { id: 'contact', label: 'Contact' },
-  { id: 'branding', label: 'Branding' },
-  { id: 'social', label: 'Social' },
+  { id: 'branding', label: 'Brand' },
   { id: 'banner', label: 'CTA' },
-  { id: 'templates', label: 'Templates' },
 ]
 
-export default function BuilderPanel({
-  formData,
-  settings,
-  onOpenScanner,
-  onReset,
-  setSectionField,
-  setSocialField,
-  setTemplate,
-}) {
+export default function BuilderPanel({ formData, onReset, setSectionField }) {
   const [activeTab, setActiveTab] = useState('personal')
 
   function renderActiveTab() {
@@ -32,27 +20,11 @@ export default function BuilderPanel({
       case 'personal':
         return <PersonalInfoTab formData={formData} setSectionField={setSectionField} />
       case 'contact':
-        return (
-          <ContactInfoTab
-            formData={formData}
-            settings={settings}
-            setSectionField={setSectionField}
-          />
-        )
+        return <ContactInfoTab formData={formData} setSectionField={setSectionField} />
       case 'branding':
         return <BrandingTab formData={formData} setSectionField={setSectionField} />
-      case 'social':
-        return <SocialMediaTab formData={formData} setSocialField={setSocialField} />
       case 'banner':
         return <BannerTab formData={formData} setSectionField={setSectionField} />
-      case 'templates':
-        return (
-          <TemplateSelector
-            selectedTemplate={formData.template}
-            suggestedTemplate={formData.meta.suggestedTemplate}
-            onSelectTemplate={setTemplate}
-          />
-        )
       default:
         return null
     }
@@ -65,19 +37,19 @@ export default function BuilderPanel({
           <div>
             <div className="eyebrow">Builder</div>
             <h2 className="mt-3 font-heading text-2xl font-semibold text-app-text">
-              Design the signature, then export production-ready HTML.
+              Generate Mohawk-ready signatures with only the fields people actually need.
             </h2>
             <p className="mt-2 max-w-2xl text-sm text-app-muted">
-              Every template renders as inline-styled tables. Edit live, import
-              from a screenshot, and copy directly into Outlook or Gmail.
+              Name, title, accreditation, email, logo choice, and CTA banner are
+              the main controls. The rest is fixed to Mohawk enterprise defaults.
             </p>
           </div>
 
           <div className="flex flex-wrap gap-3">
-            <button className="control-button" onClick={onOpenScanner} type="button">
-              <ScanSearch className="h-4 w-4" />
-              Screenshot Import
-            </button>
+            <div className="hidden items-center gap-2 rounded-2xl border border-white/10 bg-white/5 px-4 py-2 text-sm text-app-muted sm:flex">
+              <Building2 className="h-4 w-4 text-[#8ea35d]" />
+              Mohawk Group preset
+            </div>
             <button className="control-button" onClick={onReset} type="button">
               <RotateCcw className="h-4 w-4" />
               Restore Sample

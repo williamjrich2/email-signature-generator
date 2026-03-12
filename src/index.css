@@ -139,3 +139,9 @@ textarea {
     background-size: 28px 28px;
   }
 }
+
+@media (max-width: 640px) {
+  .glass-panel {
+    border-radius: 24px;
+  }
+}

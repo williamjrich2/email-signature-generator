@@ -7,7 +7,7 @@ function buildPreviewDocument(html, backdrop) {
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
   </head>
-  <body style="margin:0;padding:24px;background:${background};font-family:Arial,sans-serif;">
+  <body style="margin:0;padding:16px;background:${background};font-family:Arial,sans-serif;">
     ${html}
   </body>
 </html>`
@@ -34,9 +34,9 @@ export default function EmailClientMockup({ html, previewBackdrop }) {
             : 'bg-[linear-gradient(180deg,#f8fafc,#eef2ff)]'
         }`}
       >
-        <div className="rounded-[24px] border border-black/10 bg-white p-0 shadow-[0_20px_50px_rgba(15,23,42,0.12)]">
+        <div className="overflow-hidden rounded-[24px] border border-black/10 bg-white p-0 shadow-[0_20px_50px_rgba(15,23,42,0.12)]">
           <iframe
-            className="block min-h-[460px] w-full rounded-[24px] bg-white"
+            className="block min-h-[380px] w-full rounded-[24px] bg-white sm:min-h-[460px]"
             srcDoc={buildPreviewDocument(html, previewBackdrop)}
             title="Email signature preview"
           />

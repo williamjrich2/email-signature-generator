@@ -1,23 +1,23 @@
-# Email Signature Generator
+# Mohawk Group Signature Builder
 
-Premium single-page prototype for generating Outlook-safe HTML email signatures. The app is client-side only and focuses on high-quality export markup, a polished builder UI, and AI-assisted screenshot import.
+Enterprise-focused single-page prototype for generating Mohawk Group email signatures. The app is client-side only and is intentionally constrained: fewer inputs, approved brand options only, and Outlook-safe HTML export.
 
 ## Stack
 
 - React 19 + Vite
 - Tailwind CSS
-- `libphonenumber-js` for phone formatting
-- Anthropic Messages API for screenshot analysis
 
 ## Core Features
 
-- Tabbed builder for personal info, contact info, branding, social links, CTA banner, and template selection
-- Eight table-based signature templates with inline styles only
+- Simplified builder for employee details, email, optional location, approved logo selection, and CTA banner presets
+- Mohawk-specific email autofill in the format `firstname_lastname@mohawkind.com`
+- Approved Mohawk Group and Durkan logo options
+- Preset CTA banner selector, ready to swap with final provided assets
+- Single table-based enterprise signature template with inline styles only
 - Live preview inside an email-client mock frame
 - Light and dark preview backgrounds
 - Copy raw HTML, copy rendered rich text, and download `.html`
-- Settings panel for Anthropic API key, default width, and default country
-- Screenshot scanner modal that sends an uploaded or pasted image to Claude and maps the JSON response back into the builder
+- Mobile-optimized app layout and a signature width that stays safe on small screens
 
 ## Email Markup Rules Followed
 
@@ -45,12 +45,8 @@ npm run build
 npm run lint
 ```
 
-## AI Screenshot Import
-
-The scanner uses the Anthropic Messages API directly from the browser for this prototype. The API key is stored in localStorage, which is acceptable for prototyping only and should be moved server-side before launch.
-
 ## Image Hosting Note
 
-For the best email-client compatibility, especially in Outlook, use hosted image URLs for logos, profile photos, banners, and social icons. The prototype ships with sample PNG assets in `public/`, and exported signatures use absolute URLs based on the deployed site origin.
+For the best email-client compatibility, especially in Outlook, use hosted image URLs for logos and banners. The prototype ships with placeholder Mohawk-branded PNG assets in `public/mohawk/`, and exported signatures use absolute URLs based on the deployed site origin.
 
 If you move to production, host those assets on a stable public CDN or object store such as S3, Cloudflare R2, or another static host.
